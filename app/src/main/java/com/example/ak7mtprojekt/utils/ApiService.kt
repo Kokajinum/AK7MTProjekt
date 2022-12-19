@@ -1,9 +1,12 @@
 package com.example.ak7mtprojekt.utils
 
-import retrofit2.Call
+import com.example.ak7mtprojekt.networkdata.NetGeoInfo
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 class ApiService {
 
@@ -18,18 +21,31 @@ private const val BASE_URL_GEO =
 private const val BASE_URL_WEATHER =
     "https://api.openweathermap.org/data/2.5/weather?"
 
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+
 private val retrofitGeo = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL_GEO)
     .build()
 
 private val retrofitWeather = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL_WEATHER)
     .build()
 
-interface MarsApiService {
-    @GET("realestate")
-    fun getProperties():
-            Call<String>
+
+
+
+interface GeoApiService {
+    @GET("q={city}&limit={lim}&appid={id}")
+    suspend fun getGeoInfo(@Path("city") city: String, @Path("lim") limit: String, @Path("id") id: String = BASE_API_KEY):
+            List<NetGeoInfo>
+}
+
+object GeoApi {
+    val retrofitService : GeoApiService by lazy {
+        retrofitGeo.create(GeoApiService::class.java)
+    }
 }
