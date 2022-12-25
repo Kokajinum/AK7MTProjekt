@@ -1,5 +1,7 @@
 package com.example.ak7mtprojekt.data
 
+import com.example.ak7mtprojekt.localdata.DBWeatherInfo
+import com.example.ak7mtprojekt.localdata.asDomainModel
 import com.example.ak7mtprojekt.networkdata.NetGeoInfo
 import com.example.ak7mtprojekt.networkdata.NetWeatherInfo
 import com.example.ak7mtprojekt.networkdata.asDomainModel
@@ -19,12 +21,16 @@ class WeatherRepositoryImpl(private val database: DBWeatherInfoDatabase) : Weath
     }
 
     override suspend fun getCities(): List<WeatherInfo> {
-        val netCitiesList: List<NetWeatherInfo> = emptyList()
-        return netCitiesList.asDomainModel()
+        var NetCitiesList: List<NetWeatherInfo>
+        var DBCitiesList: List<DBWeatherInfo> = database.cityWeatherDao.getCities()
+        if (DBCitiesList.count() > 0){
+
+        }
+        return DBCitiesList.asDomainModel()
     }
 
     override suspend fun getGeoInfo(cityName: String, limit: Int): List<GeoInfo> {
-        val netGeoInfos: List<NetGeoInfo>
+        var netGeoInfos: List<NetGeoInfo>
         withContext(Dispatchers.IO) {
             netGeoInfos = GeoApi.retrofitService.getGeoInfo(cityName, limit.toString())
         }

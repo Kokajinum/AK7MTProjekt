@@ -18,6 +18,6 @@ interface DBWeatherInfoDAO {
     suspend fun deleteCity(city: DBWeatherInfo)
 
     @Query("SELECT * FROM dbweatherinfo")
-    fun getCities(): LiveData<List<DBWeatherInfo>>
+    fun getCities(): List<DBWeatherInfo>
 
 }

@@ -19,7 +19,7 @@ private const val BASE_URL_GEO =
     "http://api.openweathermap.org/geo/1.0/direct?"
 
 private const val BASE_URL_WEATHER =
-    "https://api.openweathermap.org/data/2.5/weather?"
+    "https://api.openweathermap.org/data/2.5/weather?units=metric&"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
