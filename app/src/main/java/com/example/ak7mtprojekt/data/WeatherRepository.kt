@@ -1,16 +1,15 @@
 package com.example.ak7mtprojekt.data
 
-import androidx.lifecycle.LiveData
-import com.example.ak7mtprojekt.localdata.DBWeatherInfo
 import com.example.ak7mtprojekt.uidata.GeoInfo
+import com.example.ak7mtprojekt.uidata.WeatherInfo
 
 interface WeatherRepository {
 
-    suspend fun insertCity(city: DBWeatherInfo)
+    suspend fun insertCity(city: WeatherInfo)
 
-    suspend fun deleteCity(city: DBWeatherInfo)
+    suspend fun deleteCity(city: WeatherInfo)
 
-    fun getCities(): List<DBWeatherInfo>
+    suspend fun getCities(): List<WeatherInfo>
 
     suspend fun getGeoInfo(cityName: String, limit: Int): List<GeoInfo>
 

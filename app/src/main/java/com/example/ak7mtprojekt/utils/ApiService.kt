@@ -44,6 +44,11 @@ interface GeoApiService {
             List<NetGeoInfo>
 }
 
+interface WeatherApiService {
+    @GET("")
+    suspend fun getWeatherInfo()
+}
+
 object GeoApi {
     val retrofitService : GeoApiService by lazy {
         retrofitGeo.create(GeoApiService::class.java)
