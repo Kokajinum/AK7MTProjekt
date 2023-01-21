@@ -17,7 +17,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideWeatherDatabase(app: Application) : DBWeatherInfoDatabase {
+    fun provideDBWeatherInfoDatabase(app: Application) : DBWeatherInfoDatabase {
         return Room.databaseBuilder(
             app,
             DBWeatherInfoDatabase::class.java,

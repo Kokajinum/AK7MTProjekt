@@ -1,6 +1,7 @@
 package com.example.ak7mtprojekt.utils
 
 import com.example.ak7mtprojekt.networkdata.NetGeoInfo
+import com.example.ak7mtprojekt.networkdata.NetWeatherInfo
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -45,12 +46,19 @@ interface GeoApiService {
 }
 
 interface WeatherApiService {
-    @GET("")
-    suspend fun getWeatherInfo()
+    @GET("lat={lat}&lon={lon}&appid={id}")
+    suspend fun getWeatherInfo(@Path("lat") lat: String, @Path("lon") lon: String, @Path("id") id: String = BASE_API_KEY):
+            List<NetWeatherInfo>
 }
 
 object GeoApi {
     val retrofitService : GeoApiService by lazy {
         retrofitGeo.create(GeoApiService::class.java)
+    }
+}
+
+object WeatherApi {
+    val retrofitService : WeatherApiService by lazy {
+        retrofitWeather.create(WeatherApiService::class.java)
     }
 }

@@ -13,4 +13,5 @@ interface WeatherRepository {
 
     suspend fun getGeoInfo(cityName: String, limit: Int): List<GeoInfo>
 
+    suspend fun getWeatherInfo(lat: Double, lon: Double) : WeatherInfo
 }
