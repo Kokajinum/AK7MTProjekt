@@ -6,4 +6,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="overview_screen">Přehled</string>
     <string name="search_screen">Hledat</string>
+    <string name="search_button">Vyhledat</string>
+    <string name="search_textfield_placeholder">Zadejte město...</string>
 </resources>

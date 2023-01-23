@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 class ApiService {
 
@@ -17,10 +18,10 @@ private const val BASE_API_KEY =
     "815217e82c9164b2ceba6e0870f6d1b7"
 
 private const val BASE_URL_GEO =
-    "http://api.openweathermap.org/geo/1.0/direct?"
+    "https://api.openweathermap.org/geo/1.0/"
 
 private const val BASE_URL_WEATHER =
-    "https://api.openweathermap.org/data/2.5/weather?units=metric&"
+    "https://api.openweathermap.org/data/2.5/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -40,14 +41,15 @@ private val retrofitWeather = Retrofit.Builder()
 
 
 interface GeoApiService {
-    @GET("q={city}&limit={lim}&appid={id}")
-    suspend fun getGeoInfo(@Path("city") city: String, @Path("lim") limit: String, @Path("id") id: String = BASE_API_KEY):
+    //@GET("direct?q={city}&limit={lim}&appid={id}")
+    @GET("direct?")
+    suspend fun getGeoInfo(@Query("q") city: String, @Query("limit") limit: String, @Query("appid") id: String = BASE_API_KEY):
             List<NetGeoInfo>
 }
 
 interface WeatherApiService {
-    @GET("lat={lat}&lon={lon}&appid={id}")
-    suspend fun getWeatherInfo(@Path("lat") lat: String, @Path("lon") lon: String, @Path("id") id: String = BASE_API_KEY):
+    @GET("weather?units=metric&lat={lat}&lon={lon}&appid={id}")
+    suspend fun getWeatherInfo(@Query("lat") lat: String, @Query("lon") lon: String, @Query("id") id: String = BASE_API_KEY):
             List<NetWeatherInfo>
 }
 

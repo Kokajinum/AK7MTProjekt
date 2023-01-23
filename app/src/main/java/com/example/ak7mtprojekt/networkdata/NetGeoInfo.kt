@@ -7,7 +7,7 @@ data class NetGeoInfo(
     val lat: Double,
     val lon: Double,
     val country: String,
-    val state: String
+    val state: String?
 )
 
 fun List<NetGeoInfo>.asDomainModel(): List<GeoInfo> {
