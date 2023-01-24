@@ -1,13 +1,10 @@
 package com.example.ak7mtprojekt.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -20,7 +17,6 @@ import com.example.ak7mtprojekt.ui.Overview.OverviewScreen
 import com.example.ak7mtprojekt.ui.Overview.OverviewViewModel
 import com.example.ak7mtprojekt.ui.Search.SearchScreen
 import com.example.ak7mtprojekt.ui.Search.SearchViewModel
-import com.example.ak7mtprojekt.ui.citySearch.CitySearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

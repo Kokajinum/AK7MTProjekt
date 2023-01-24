@@ -20,17 +20,23 @@ class SearchViewModel @Inject constructor(
     private val _searchState = MutableStateFlow("")
     val searchState: StateFlow<String> = _searchState
 
-    private val _cities = MutableStateFlow<List<GeoInfo>>(emptyList())
-    val cities: StateFlow<List<GeoInfo>> = _cities
+    private val _cities = MutableStateFlow<MutableList<GeoInfo>>(ArrayList())
+    val cities: StateFlow<MutableList<GeoInfo>> = _cities
 
     private val _isFavIconVisible = MutableStateFlow(false)
     val isFavIconVisible: StateFlow<Boolean> = _isFavIconVisible
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+
     fun searchCities() {
         try {
             viewModelScope.launch {
-                val qeo = repository.getGeoInfo(_searchState.value, 5)
+                _isLoading.update { true }
+                val qeo = repository.getGeoInfo(_searchState.value, 5).toMutableList()
                 _cities.update { qeo }
+                _isLoading.update { false }
             }
         }
         catch (e: Exception) {
@@ -57,11 +63,21 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun saveCity() {
+    fun onCardSelected(geoInfo: GeoInfo) {
+        try {
+            viewModelScope.launch {
+                val weatherInfo = repository.getWeatherInfo(geoInfo.lat, geoInfo.lon)
+                repository.insertCity(weatherInfo)
+                val updatedCities = _cities.value.filter { !it.equals(geoInfo) }.toMutableList()
+                _cities.update { updatedCities }
+            }
+        }
+        catch (e: Exception) {
 
+        }
     }
 
-    fun getWeather() {
-
+    fun showLoading() {
+        _isLoading.update { true }
     }
 }

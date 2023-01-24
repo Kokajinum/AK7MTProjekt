@@ -2,22 +2,12 @@ package com.example.ak7mtprojekt.networkdata
 
 import com.example.ak7mtprojekt.localdata.DBWeatherInfo
 import com.example.ak7mtprojekt.uidata.WeatherInfo
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 //vygenerováno na https://json2kt.com/
 data class NetWeatherInfo(
-    /*val id: Int? = null,
-    val cityName: String,
-    val cityState: String,
-    val description: String?,
-    val temperatureC: Int,
-    val dateOfFetch: Date,
-    val lat: Double,
-    val lon: Double*/
     var coord      : Coord?             = Coord(),
-    var weather    : ArrayList<Weather> = arrayListOf(),
+    var weather    : List<Weather> = emptyList(),
     var base       : String?            = null,
     var main       : Main?              = Main(),
     var visibility : Int?               = null,
@@ -98,6 +88,32 @@ fun List<NetWeatherInfo>.asDatabaseModel(): List<DBWeatherInfo> {
             lon = it.coord?.lon
         )
     }
+}
+
+fun NetWeatherInfo.asDatabaseModel(): DBWeatherInfo {
+    return DBWeatherInfo(
+        this.id,
+        this.name,
+        this.sys?.country,
+        this.weather.firstOrNull()?.description,
+        this.main?.temp,
+        null,
+        this.coord?.lat,
+        this.coord?.lon
+    )
+}
+
+fun NetWeatherInfo.asDomainModel(): WeatherInfo {
+    return WeatherInfo(
+        this.id,
+        this.name,
+        this.sys?.country,
+        this.weather.firstOrNull()?.description,
+        this.main?.temp,
+        Date(),
+        this.coord?.lat,
+        this.coord?.lon
+    )
 }
 
 /*fun List<NetWeatherInfo>.asDomainModel(): List<WeatherInfo> {

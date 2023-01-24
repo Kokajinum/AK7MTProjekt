@@ -1,6 +1,6 @@
 package com.example.ak7mtprojekt.uidata
 
-import java.time.LocalDate
+import com.example.ak7mtprojekt.localdata.DBWeatherInfo
 import java.util.*
 
 data class WeatherInfo(
@@ -13,3 +13,16 @@ data class WeatherInfo(
     val lat: Double?,
     val lon: Double?,
 )
+
+fun WeatherInfo.asDatabaseModel(): DBWeatherInfo {
+    return DBWeatherInfo(
+        this.id,
+        this.cityName,
+        this.cityState,
+        this.description,
+        this.temperatureC,
+        this.dateOfFetch,
+        this.lat,
+        this.lon
+    )
+}

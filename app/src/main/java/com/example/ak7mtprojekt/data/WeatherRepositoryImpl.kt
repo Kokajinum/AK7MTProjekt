@@ -7,6 +7,7 @@ import com.example.ak7mtprojekt.networkdata.NetWeatherInfo
 import com.example.ak7mtprojekt.networkdata.asDomainModel
 import com.example.ak7mtprojekt.uidata.GeoInfo
 import com.example.ak7mtprojekt.uidata.WeatherInfo
+import com.example.ak7mtprojekt.uidata.asDatabaseModel
 import com.example.ak7mtprojekt.utils.GeoApi
 import com.example.ak7mtprojekt.utils.WeatherApi
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,8 @@ import kotlinx.coroutines.withContext
 
 class WeatherRepositoryImpl(private val database: DBWeatherInfoDatabase) : WeatherRepository {
     override suspend fun insertCity(city: WeatherInfo) {
-        TODO("Not yet implemented")
+        val dbWeatherInfo: DBWeatherInfo = city.asDatabaseModel()
+        database.cityWeatherDao.insertCity(dbWeatherInfo)
     }
 
     override suspend fun deleteCity(city: WeatherInfo) {
@@ -22,13 +24,9 @@ class WeatherRepositoryImpl(private val database: DBWeatherInfoDatabase) : Weath
     }
 
     override suspend fun getCities(): List<WeatherInfo> {
-        var NetCitiesList: List<NetWeatherInfo> = emptyList()
         var DBCitiesList: List<DBWeatherInfo> = emptyList()
         withContext(Dispatchers.IO) {
             DBCitiesList = database.cityWeatherDao.getCities()
-        }
-        if (DBCitiesList.count() > 0){
-
         }
         return DBCitiesList.asDomainModel()
     }
@@ -42,6 +40,10 @@ class WeatherRepositoryImpl(private val database: DBWeatherInfoDatabase) : Weath
     }
 
     override suspend fun getWeatherInfo(lat: Double, lon: Double): WeatherInfo {
-        TODO("Not yet implemented")
+        var netWeatherInfo: NetWeatherInfo
+        withContext(Dispatchers.IO) {
+            netWeatherInfo = WeatherApi.retrofitService.getWeatherInfo(lat.toString(), lon.toString())
+        }
+        return netWeatherInfo.asDomainModel()
     }
 }

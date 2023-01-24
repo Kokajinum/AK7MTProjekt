@@ -7,12 +7,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
-class ApiService {
-
-}
 
 private const val BASE_API_KEY =
     "815217e82c9164b2ceba6e0870f6d1b7"
@@ -43,14 +39,18 @@ private val retrofitWeather = Retrofit.Builder()
 interface GeoApiService {
     //@GET("direct?q={city}&limit={lim}&appid={id}")
     @GET("direct?")
-    suspend fun getGeoInfo(@Query("q") city: String, @Query("limit") limit: String, @Query("appid") id: String = BASE_API_KEY):
-            List<NetGeoInfo>
+    suspend fun getGeoInfo(
+        @Query("q") city: String,
+        @Query("limit") limit: String,
+        @Query("appid") id: String = BASE_API_KEY): List<NetGeoInfo>
 }
 
 interface WeatherApiService {
-    @GET("weather?units=metric&lat={lat}&lon={lon}&appid={id}")
-    suspend fun getWeatherInfo(@Query("lat") lat: String, @Query("lon") lon: String, @Query("id") id: String = BASE_API_KEY):
-            List<NetWeatherInfo>
+    @GET("weather?units=metric&")
+    suspend fun getWeatherInfo(
+        @Query("lat") lat: String,
+        @Query("lon") lon: String,
+        @Query("appid") id: String = BASE_API_KEY): NetWeatherInfo
 }
 
 object GeoApi {

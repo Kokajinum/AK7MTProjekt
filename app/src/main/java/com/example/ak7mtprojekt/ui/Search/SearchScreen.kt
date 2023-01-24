@@ -3,9 +3,9 @@ package com.example.ak7mtprojekt.ui.Search
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -25,7 +25,7 @@ fun SearchScreen(
     navController: NavController,
     searchViewModel: SearchViewModel
 ) {
-
+    val isLoading by searchViewModel.isLoading.collectAsState()
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -40,6 +40,7 @@ fun SearchScreen(
         Button(
             onClick = {
                 if (searchText != "") {
+                    searchViewModel.showLoading()
                     searchViewModel.searchCities()
                 }
                       },
@@ -53,9 +54,19 @@ fun SearchScreen(
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(stringResource(id = R.string.search_button))
         }
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .progressSemantics()
+                    .size(32.dp)
+                    .padding(5.dp)
+            )
+        }
 
         val isFavIconVisible by searchViewModel.isFavIconVisible.collectAsState()
         val cities by searchViewModel.cities.collectAsState()
+
+
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -65,7 +76,7 @@ fun SearchScreen(
                     modifier = Modifier.padding(25.dp, 5.dp),
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 10.dp),
-                    onClick = {  }
+                    onClick = { searchViewModel.onCardSelected(city) }
 
                 ) {
                     Column(

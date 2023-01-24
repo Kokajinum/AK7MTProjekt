@@ -4,32 +4,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.ak7mtprojekt.ui.Overview.OverviewViewModel
-import com.example.ak7mtprojekt.ui.Screen
 import com.example.ak7mtprojekt.ui.Search.SearchViewModel
 import com.example.ak7mtprojekt.ui.WeatherApp
-import com.example.ak7mtprojekt.ui.citySearch.CitySearchViewModel
 import com.example.ak7mtprojekt.ui.theme.AK7MTProjektTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val citySearchViewModel: CitySearchViewModel by viewModels()
     private val overviewViewModel: OverviewViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                overviewViewModel.isInitializing.value
+            }
+        }
 
 
         setContent {
