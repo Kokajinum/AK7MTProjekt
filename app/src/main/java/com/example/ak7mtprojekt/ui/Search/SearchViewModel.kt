@@ -34,7 +34,7 @@ class SearchViewModel @Inject constructor(
         try {
             viewModelScope.launch {
                 _isLoading.update { true }
-                val qeo = repository.getGeoInfo(_searchState.value, 5).toMutableList()
+                val qeo = repository.getGeoInfo(_searchState.value, 15).toMutableList()
                 _cities.update { qeo }
                 _isLoading.update { false }
             }
@@ -79,5 +79,9 @@ class SearchViewModel @Inject constructor(
 
     fun showLoading() {
         _isLoading.update { true }
+    }
+
+    fun clearCities() {
+        _cities.update { _cities.value.filter { false }.toMutableList() }
     }
 }

@@ -43,6 +43,9 @@ fun SearchScreen(
                     searchViewModel.showLoading()
                     searchViewModel.searchCities()
                 }
+                else {
+                    searchViewModel.clearCities()
+                }
                       },
             )
         {
@@ -63,9 +66,8 @@ fun SearchScreen(
             )
         }
 
-        val isFavIconVisible by searchViewModel.isFavIconVisible.collectAsState()
-        val cities by searchViewModel.cities.collectAsState()
 
+        val cities by searchViewModel.cities.collectAsState()
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -86,20 +88,10 @@ fun SearchScreen(
                     ) {
                         Text("${city.name}", fontWeight = FontWeight.Bold)
                         Row {
-                            Text("${city.country}")
+                            Text("stát: ${city.country}")
                             if (city.state != null) {
-                                Text("${city.state}")
+                                Text(" - ${city.state}")
                             }
-
-                            /*if (isFavIconVisible) {
-                                Icon(
-                                    Icons.Filled.Favorite,
-                                    contentDescription = "Favorite",
-                                    modifier = Modifier.size(ButtonDefaults.IconSize),
-
-                                    )
-                            }*/
-
                         }
 
                     }

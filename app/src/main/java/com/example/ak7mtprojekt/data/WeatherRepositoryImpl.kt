@@ -31,6 +31,21 @@ class WeatherRepositoryImpl(private val database: DBWeatherInfoDatabase) : Weath
         return DBCitiesList.asDomainModel()
     }
 
+    override suspend fun updateCities(cityList: MutableList<WeatherInfo>): MutableList<WeatherInfo> {
+        var updatedCityList: MutableList<WeatherInfo> = ArrayList()
+        withContext(Dispatchers.IO) {
+            cityList.forEach {
+                var updatedCity: WeatherInfo = WeatherApi.retrofitService.getWeatherInfo(
+                    it.lat.toString(),
+                    it.lon.toString()).asDomainModel()
+
+                updatedCityList.add(updatedCity)
+                insertCity(updatedCity)
+            }
+        }
+        return updatedCityList
+    }
+
     override suspend fun getGeoInfo(cityName: String, limit: Int): List<GeoInfo> {
         var netGeoInfos: List<NetGeoInfo>
         withContext(Dispatchers.IO) {
